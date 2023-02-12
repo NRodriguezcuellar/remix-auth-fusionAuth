@@ -1,7 +1,7 @@
-import { createCookieSessionStorage } from "@remix-run/server-runtime";
-import { MyStrategy } from "../src";
+import { createCookieSessionStorage } from "@remix-run/node";
+import { FusionAuthStrategy } from "../src";
 
-describe(MyStrategy, () => {
+describe(FusionAuthStrategy, () => {
   let verify = jest.fn();
   // You will probably need a sessionStorage to test the strategy.
   let sessionStorage = createCookieSessionStorage({
@@ -13,8 +13,16 @@ describe(MyStrategy, () => {
   });
 
   test("should have the name of the strategy", () => {
-    let strategy = new MyStrategy({ something: "You may need" }, verify);
-    expect(strategy.name).toBe("change-me");
+    let strategy = new FusionAuthStrategy(
+      {
+        callbackURL: "https://example.app/oauth2/authorize",
+        clientId: "exampleId",
+        clientSecret: "exampleSecret",
+        host: "example.app",
+      },
+      verify
+    );
+    expect(strategy.name).toBe("FusionAuth");
   });
 
   test.todo("Write more tests to check everything works as expected");
